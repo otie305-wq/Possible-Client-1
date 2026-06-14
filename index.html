@@ -22,15 +22,6 @@
 <body>
 
 <!-- ═══════════════════════════════════════
-     BOOKING WIDGET (loads at body open)
-════════════════════════════════════════ -->
-<script
-  src="https://appointment-system-7q3h.vercel.app/widget.js"
-  data-location-id="2f3c9d84-5264-4338-9921-8f9a2aa703cd"
-  data-api-url="https://appointment-system-7q3h.vercel.app"
-></script>
-
-<!-- ═══════════════════════════════════════
      MOBILE DRAWER
 ════════════════════════════════════════ -->
 <div class="drawer-overlay" id="drawerOverlay"></div>
@@ -341,7 +332,63 @@
     <p class="booking-sub" data-i18n="booking_sub">
       Choose your package, select your barber, and lock in your time. We'll take care of everything else.
     </p>
-    <div id="booking-widget" role="region" aria-label="Appointment booking"></div>
+
+    <!-- ── WIDGET OPTIONS (choose one, then delete the others) ─────────── -->
+    <div style="display:grid;gap:40px;margin-top:48px;">
+
+      <!-- ─────────────────────────────
+           OPTION 1 — Floating Button (FAB)
+           A floating "Book Now" button appears in the corner of the screen.
+           No inline panel on the page — the widget handles everything.
+      ───────────────────────────────── -->
+      <div style="border:1px solid var(--gold-border);border-radius:6px;padding:32px;">
+        <p style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Option 1 — Floating Button (FAB)</p>
+        <p style="color:var(--cream-dim);font-size:15px;line-height:1.7;margin:0;">
+          The widget creates a floating "Book Now" button that hovers in the bottom-right corner of every page.
+          No inline element needed — the script tag alone activates it.<br><br>
+          <strong style="color:var(--cream);">Active when:</strong> script has <code style="color:var(--gold);font-size:13px;">data-location-id</code> directly on it, and no <code style="color:var(--gold);font-size:13px;">data-apw-panel</code> div exists on the page.
+        </p>
+      </div>
+
+      <!-- ─────────────────────────────
+           OPTION 2 — Inline Panel (always visible)
+           The booking form renders directly inside the page.
+      ───────────────────────────────── -->
+      <div style="border:1px solid var(--gold-border);border-radius:6px;padding:32px;">
+        <p style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Option 2 — Inline Panel</p>
+        <div
+          data-apw-panel
+          data-location-id="2f3c9d84-5264-4338-9921-8f9a2aa703cd"
+          data-api-url="https://appointment-system-7q3h.vercel.app"
+          data-lang="en"
+          style="width:420px;max-width:100%;"
+        ></div>
+      </div>
+
+      <!-- ─────────────────────────────
+           OPTION 3 — FAB Button + Inline Panel side by side
+           Both the floating button AND the inline panel are active together.
+      ───────────────────────────────── -->
+      <div style="border:1px solid var(--gold-border);border-radius:6px;padding:32px;">
+        <p style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;">Option 3 — Floating Button + Inline Panel Side by Side</p>
+        <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <h3 class="serif" style="font-size:22px;margin-bottom:12px;">Book Now</h3>
+            <p style="color:var(--cream-dim);font-size:15px;line-height:1.7;">Use the form on the right to book your appointment.</p>
+          </div>
+          <div
+            data-apw-panel
+            data-location-id="2f3c9d84-5264-4338-9921-8f9a2aa703cd"
+            data-api-url="https://appointment-system-7q3h.vercel.app"
+            data-lang="en"
+            style="width:420px;flex-shrink:0;max-width:100%;"
+          ></div>
+        </div>
+      </div>
+
+    </div>
+    <!-- ── END WIDGET OPTIONS ───────────────────────────────────────────── -->
+
   </div>
 </section>
 
@@ -467,27 +514,13 @@
 </footer>
 
 <!-- ═══════════════════════════════════════
-     BOOKING MODAL
-════════════════════════════════════════ -->
-<div id="bookingModal" role="dialog" aria-modal="true" aria-label="Book an appointment">
-  <div class="bm-card">
-    <button class="bm-close" id="bookingClose" aria-label="Close booking">✕</button>
-    <iframe
-      src="https://appointment-system-7q3h.vercel.app?location=2f3c9d84-5264-4338-9921-8f9a2aa703cd"
-      title="Book an appointment"
-      loading="lazy"
-      allowfullscreen
-    ></iframe>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════
      SCRIPTS
 ════════════════════════════════════════ -->
 <script src="js/i18n.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/booking.js"></script>
 <script src="js/reveal.js"></script>
+<script src="https://appointment-system-7q3h.vercel.app/widget.js"></script>
 
 </body>
 </html>
