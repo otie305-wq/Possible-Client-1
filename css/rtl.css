@@ -1,0 +1,125 @@
+/* ── RTL / ARABIC OVERRIDES ──────────────
+   Applied when <html dir="rtl"> is set.
+   Covers font, layout mirroring, and
+   direction-specific spacing fixes.
+──────────────────────────────────────── */
+
+/* Arabic font stack */
+[dir="rtl"] body,
+[dir="rtl"] .btn-primary,
+[dir="rtl"] .btn-outline,
+[dir="rtl"] .eyebrow,
+[dir="rtl"] .lang-toggle,
+[dir="rtl"] .nav-links a,
+[dir="rtl"] .tag {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+}
+
+/* Serif Arabic: use Cairo for display headings too */
+[dir="rtl"] .serif,
+[dir="rtl"] .hero-title,
+[dir="rtl"] .intro-tagline,
+[dir="rtl"] .section-head h2,
+[dir="rtl"] .service-card h3,
+[dir="rtl"] .team-name,
+[dir="rtl"] .contact-col h4,
+[dir="rtl"] .booking h2,
+[dir="rtl"] .drawer a {
+  font-family: var(--font-ar);
+  font-style: normal;
+}
+
+/* Italic becomes normal weight in Arabic */
+[dir="rtl"] em {
+  font-style: normal;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* ── NAV ─── */
+[dir="rtl"] .nav { flex-direction: row-reverse; }
+[dir="rtl"] .nav-links { margin-left: 0; margin-right: auto; flex-direction: row-reverse; }
+[dir="rtl"] .nav-right { margin-left: 0; margin-right: auto; }
+
+/* ── MOBILE DRAWER ─── */
+[dir="rtl"] .drawer {
+  right: auto;
+  left: -100%;
+  border-left: none;
+  border-right: 1px solid var(--gold-border);
+}
+[dir="rtl"] .drawer.open { left: 0; right: auto; }
+[dir="rtl"] .drawer-close { right: auto; left: 26px; }
+
+/* ── HERO ─── */
+[dir="rtl"] .hero-left { text-align: right; }
+[dir="rtl"] .hero-eyebrow { flex-direction: row-reverse; }
+[dir="rtl"] .hero-sub { max-width: 100%; }
+[dir="rtl"] .hero-ctas { flex-direction: row-reverse; justify-content: flex-end; }
+[dir="rtl"] .hero-proof { flex-direction: row-reverse; }
+[dir="rtl"] .hero-right::before {
+  background: linear-gradient(270deg, var(--bg) 0%, rgba(7,7,13,.3) 35%, transparent 60%);
+}
+
+/* ── STATS BAR ─── */
+[dir="rtl"] .statsbar { flex-direction: row-reverse; }
+
+/* ── INTRO ─── */
+[dir="rtl"] .intro-tagline { text-align: right; }
+[dir="rtl"] .intro-body { text-align: right; }
+
+/* ── SECTION HEADS ─── */
+[dir="rtl"] .section-head .eyebrow { flex-direction: row-reverse; }
+[dir="rtl"] .section-head h2 { text-align: right; }
+
+/* ── SERVICE CARDS ─── */
+[dir="rtl"] .service-row { flex-direction: row-reverse; }
+[dir="rtl"] .service-dur { margin-left: 0; margin-right: auto; }
+[dir="rtl"] .service-badge { letter-spacing: 0; }
+[dir="rtl"] .service-card h3,
+[dir="rtl"] .service-badge { text-align: right; }
+
+/* ── TEAM ─── */
+[dir="rtl"] .team-overlay { text-align: right; }
+[dir="rtl"] .team-tags { flex-direction: row-reverse; }
+[dir="rtl"] .team-specialty { text-align: right; }
+
+/* ── REVIEWS ─── */
+[dir="rtl"] .review-card { text-align: right; }
+[dir="rtl"] .review-stars { flex-direction: row-reverse; }
+
+/* ── CONTACT ─── */
+[dir="rtl"] .contact-col h4,
+[dir="rtl"] .contact-col p,
+[dir="rtl"] .contact-col a { text-align: right; }
+[dir="rtl"] .hours-row { flex-direction: row-reverse; }
+
+/* ── FOOTER ─── */
+[dir="rtl"] .footer { flex-direction: row-reverse; }
+[dir="rtl"] .footer-links { flex-direction: row-reverse; }
+
+/* ── BOOKING SECTION ─── */
+[dir="rtl"] .booking-inner { text-align: center; }
+[dir="rtl"] .booking .eyebrow { justify-content: center; flex-direction: row-reverse; }
+
+/* ── MODAL CLOSE ─── */
+[dir="rtl"] .bm-close { right: auto; left: 14px; }
+
+/* ── EYEBROW CENTERED ─── */
+[dir="rtl"] .eyebrow.centered { flex-direction: row-reverse; }
+
+/* ── MOBILE RTL ─── */
+@media (max-width: 860px) {
+  [dir="rtl"] .hero-left {
+    justify-content: flex-end;
+    text-align: right;
+  }
+  [dir="rtl"] .hero-right::before {
+    background: linear-gradient(to top, rgba(7,7,13,.95) 30%, rgba(7,7,13,.45) 70%, transparent 100%);
+  }
+  [dir="rtl"] .hero-ctas { align-items: flex-end; }
+}
+@media (max-width: 480px) {
+  [dir="rtl"] .hero-ctas { flex-direction: column; align-items: flex-end; }
+}

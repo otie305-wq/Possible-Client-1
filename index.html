@@ -1,1402 +1,493 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ace Lebanese Barbershop | Al Khobar</title>
-  <meta name="description" content="Al Khobar's premier Lebanese barbershop. Expert haircuts, fades, beard trims, Japanese head spa and luxury facial treatments. Book your appointment today.">
+  <meta name="description" content="Al Khobar's premier Lebanese barbershop. Expert haircuts, fades, beard trims, Japanese head spa and luxury facial treatments.">
 
+  <!-- Fonts: DM Sans (EN body) + Cormorant Garamond (EN display) + Cairo (AR) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 
-  <style>
-    /* ─── TOKENS ─────────────────────────────── */
-    :root {
-      --bg:           #07070d;
-      --surface-1:    #0d0d17;
-      --surface-2:    #12121f;
-      --surface-3:    #181828;
-      --gold:         #c9a96e;
-      --gold-light:   #e2c98a;
-      --gold-dim:     rgba(201,169,110,.5);
-      --gold-border:  rgba(201,169,110,.16);
-      --gold-glow:    rgba(201,169,110,.08);
-      --cream:        #f5edd8;
-      --cream-dim:    rgba(245,237,216,.6);
-      --cream-faint:  rgba(245,237,216,.35);
-      --white:        #ffffff;
-      --nav-h:        80px;
-      --radius:       3px;
-    }
-
-    /* ─── RESET ──────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--cream);
-      font-family: 'DM Sans', system-ui, sans-serif;
-      font-weight: 300;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-    img { max-width: 100%; display: block; }
-    a { color: inherit; text-decoration: none; }
-    button { cursor: pointer; border: none; background: none; font-family: inherit; }
-    ul { list-style: none; }
-
-    /* ─── TYPE HELPERS ───────────────────────── */
-    .serif { font-family: 'Cormorant Garamond', Georgia, serif; }
-    .eyebrow {
-      font-size: 10.5px;
-      font-weight: 500;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--gold);
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .rule {
-      display: inline-block;
-      width: 44px;
-      height: 1px;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-
-    /* ─── BUTTONS ────────────────────────────── */
-    .btn-primary {
-      display: inline-block;
-      font-size: 11.5px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--bg);
-      background: var(--gold);
-      padding: 15px 36px;
-      border-radius: var(--radius);
-      transition: background 0.22s, transform 0.18s;
-    }
-    .btn-primary:hover {
-      background: var(--gold-light);
-      transform: translateY(-1px);
-    }
-    .btn-outline {
-      display: inline-block;
-      font-size: 11.5px;
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--cream-dim);
-      border-bottom: 1px solid var(--gold-border);
-      padding: 15px 0;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .btn-outline:hover {
-      color: var(--gold);
-      border-color: var(--gold-dim);
-    }
-
-    /* ─── NAV ────────────────────────────────── */
-    .nav {
-      position: fixed;
-      inset: 0 0 auto 0;
-      z-index: 200;
-      height: var(--nav-h);
-      display: flex;
-      align-items: center;
-      padding: 0 56px;
-      transition: background 0.45s ease, border-color 0.45s ease, backdrop-filter 0.45s ease;
-      border-bottom: 1px solid transparent;
-    }
-    .nav.scrolled {
-      background: rgba(7,7,13,0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom-color: var(--gold-border);
-    }
-    .nav-logo img {
-      height: 42px;
-      width: auto;
-      filter: brightness(1.1) drop-shadow(0 0 12px rgba(201,169,110,.15));
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 44px;
-      margin-left: auto;
-    }
-    .nav-links a {
-      font-size: 12px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--cream-dim);
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--cream); }
-    .nav-book {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--bg) !important;
-      background: var(--gold);
-      padding: 10px 26px;
-      border-radius: var(--radius);
-      transition: background 0.2s !important;
-    }
-    .nav-book:hover { background: var(--gold-light) !important; }
-
-    /* hamburger */
-    .nav-burger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      gap: 6px;
-      width: 32px;
-      height: 32px;
-      margin-left: auto;
-    }
-    .nav-burger span {
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--cream);
-      transition: transform 0.3s, opacity 0.3s, width 0.3s;
-    }
-    .nav-burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-burger.active span:nth-child(2) { opacity: 0; width: 0; }
-    .nav-burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* mobile drawer */
-    .drawer-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.72);
-      z-index: 300;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.35s;
-    }
-    .drawer-overlay.open { opacity: 1; pointer-events: all; }
-    .drawer {
-      position: fixed;
-      top: 0; right: -100%;
-      width: min(80%, 320px);
-      height: 100%;
-      background: var(--surface-1);
-      border-left: 1px solid var(--gold-border);
-      z-index: 301;
-      padding: 96px 40px 48px;
-      transition: right 0.38s cubic-bezier(0.4,0,0.2,1);
-      display: flex;
-      flex-direction: column;
-      gap: 36px;
-    }
-    .drawer.open { right: 0; }
-    .drawer-close {
-      position: absolute;
-      top: 26px; right: 26px;
-      font-size: 20px;
-      color: var(--cream-dim);
-      line-height: 1;
-    }
-    .drawer a {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 400;
-      color: var(--cream);
-      transition: color 0.2s;
-    }
-    .drawer a:hover { color: var(--gold); }
-
-    /* ─── HERO ───────────────────────────────── */
-    .hero {
-      position: relative;
-      min-height: 100dvh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      overflow: hidden;
-    }
-
-    /* subtle geometric watermark */
-    .hero-watermark {
-      position: absolute;
-      inset: 0;
-      opacity: 0.035;
-      pointer-events: none;
-      z-index: 0;
-      background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c9a96e'%3E%3Cpath d='M40 0 L44 36 L80 40 L44 44 L40 80 L36 44 L0 40 L36 36 Z' fill-opacity='.6'/%3E%3Ccircle cx='40' cy='40' r='4' fill-opacity='.4'/%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .hero-left {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: calc(var(--nav-h) + 64px) 64px 80px;
-    }
-    .hero-eyebrow { margin-bottom: 30px; }
-    .hero-title {
-      font-size: clamp(52px, 5.8vw, 92px);
-      font-weight: 400;
-      line-height: 1.02;
-      letter-spacing: -0.01em;
-      color: var(--cream);
-      margin-bottom: 12px;
-    }
-    .hero-title em {
-      font-style: italic;
-      color: var(--gold);
-    }
-    .hero-sub {
-      font-size: clamp(14px, 1.1vw, 16px);
-      font-weight: 300;
-      color: var(--cream-dim);
-      line-height: 1.75;
-      max-width: 400px;
-      margin-top: 20px;
-      margin-bottom: 48px;
-    }
-    .hero-ctas {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      flex-wrap: wrap;
-    }
-    .hero-proof {
-      margin-top: 56px;
-      padding-top: 40px;
-      border-top: 1px solid var(--gold-border);
-      display: flex;
-      align-items: center;
-      gap: 28px;
-    }
-    .proof-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 40px;
-      font-weight: 300;
-      color: var(--gold);
-      line-height: 1;
-    }
-    .proof-stars {
-      color: var(--gold);
-      font-size: 13px;
-      letter-spacing: 3px;
-      margin-top: 3px;
-    }
-    .proof-text {
-      font-size: 12.5px;
-      color: var(--cream-dim);
-      line-height: 1.6;
-    }
-    .proof-divider {
-      width: 1px;
-      height: 44px;
-      background: var(--gold-border);
-    }
-
-    .hero-right {
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-right::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, var(--bg) 0%, rgba(7,7,13,.3) 35%, transparent 60%);
-      z-index: 1;
-    }
-    .hero-right::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 45%;
-      background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
-      z-index: 1;
-    }
-    .hero-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 20%;
-      filter: brightness(0.82) contrast(1.08) saturate(0.9);
-    }
-
-    /* ─── TICKER / STATS BAR ─────────────────── */
-    .statsbar {
-      background: var(--surface-1);
-      border-top: 1px solid var(--gold-border);
-      border-bottom: 1px solid var(--gold-border);
-      padding: 28px 48px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 64px;
-    }
-    .stat {
-      text-align: center;
-    }
-    .stat-n {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 44px;
-      font-weight: 300;
-      color: var(--gold);
-      line-height: 1;
-      display: block;
-    }
-    .stat-l {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--cream-faint);
-      margin-top: 5px;
-      display: block;
-    }
-    .stat-sep {
-      width: 1px;
-      height: 48px;
-      background: var(--gold-border);
-      flex-shrink: 0;
-    }
-
-    /* ─── SECTION BASE ───────────────────────── */
-    .section {
-      padding: 112px 56px;
-    }
-    .inner {
-      max-width: 1180px;
-      margin: 0 auto;
-    }
-    .section-head {
-      margin-bottom: 72px;
-    }
-    .section-head .eyebrow {
-      margin-bottom: 22px;
-    }
-    .section-head h2 {
-      font-size: clamp(38px, 4.2vw, 68px);
-      font-weight: 400;
-      line-height: 1.06;
-      color: var(--cream);
-    }
-    .section-head h2 em {
-      font-style: italic;
-      color: var(--gold);
-    }
-
-    /* ─── INTRO BAND ─────────────────────────── */
-    .intro {
-      background: var(--surface-1);
-      padding: 80px 56px;
-    }
-    .intro-inner {
-      max-width: 1180px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1px 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-    .intro-sep { background: var(--gold-border); }
-    .intro-tagline {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(28px, 3vw, 46px);
-      font-weight: 300;
-      color: var(--cream);
-      line-height: 1.25;
-    }
-    .intro-tagline em {
-      font-style: italic;
-      color: var(--gold);
-    }
-    .intro-body {
-      font-size: 15px;
-      font-weight: 300;
-      color: var(--cream-dim);
-      line-height: 1.8;
-    }
-
-    /* ─── SERVICES ───────────────────────────── */
-    .services { background: var(--bg); }
-    .services-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    .service-card {
-      position: relative;
-      background: var(--surface-1);
-      border: 1px solid var(--gold-border);
-      border-radius: 4px;
-      padding: 52px 48px 48px;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .service-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 70% 0%, var(--gold-glow) 0%, transparent 65%);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.4s;
-    }
-    .service-card:hover {
-      border-color: var(--gold-dim);
-      transform: translateY(-3px);
-    }
-    .service-card:hover::after { opacity: 1; }
-    .service-top-line {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(to right, transparent 0%, var(--gold) 50%, transparent 100%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .service-card:hover .service-top-line { opacity: 1; }
-
-    .service-badge {
-      display: inline-block;
-      font-size: 9.5px;
-      font-weight: 500;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 2px;
-      margin-bottom: 26px;
-    }
-    .badge-standard {
-      color: var(--gold);
-      background: transparent;
-      border: 1px solid var(--gold-border);
-    }
-    .badge-vip {
-      color: var(--bg);
-      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
-    }
-
-    .service-card h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 34px;
-      font-weight: 400;
-      color: var(--cream);
-      margin-bottom: 32px;
-    }
-    .service-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    .service-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 15px 0;
-      border-bottom: 1px solid rgba(201,169,110,0.07);
-      font-size: 14px;
-      color: var(--cream-dim);
-      transition: color 0.2s;
-    }
-    .service-row:last-child { border-bottom: none; }
-    .service-row:hover { color: var(--cream); }
-    .service-dot {
-      width: 18px;
-      height: 18px;
-      border: 1px solid var(--gold-border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      color: var(--gold);
-      font-size: 8px;
-    }
-    .service-dur {
-      margin-left: auto;
-      font-size: 11px;
-      color: var(--gold-dim);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .service-cta {
-      margin-top: 40px;
-    }
-
-    /* ─── GALLERY ────────────────────────────── */
-    .gallery {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3px;
-      overflow: hidden;
-    }
-    .gallery-cell {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 3/2;
-    }
-    .gallery-cell img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.75) saturate(0.85);
-      transition: transform 0.65s ease, filter 0.4s ease;
-    }
-    .gallery-cell:hover img {
-      transform: scale(1.05);
-      filter: brightness(0.88) saturate(1);
-    }
-    .gallery-cell::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(201,169,110,.06) 0%, transparent 55%);
-      pointer-events: none;
-    }
-
-    /* ─── TEAM ───────────────────────────────── */
-    .team { background: var(--surface-1); }
-    .team-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-    }
-    .team-card {
-      background: var(--surface-2);
-      border: 1px solid var(--gold-border);
-      border-radius: 4px;
-      overflow: hidden;
-      transition: border-color 0.3s;
-    }
-    .team-card:hover { border-color: var(--gold-dim); }
-    .team-photo-wrap {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 4/5;
-    }
-    .team-photo-wrap::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 55%;
-      background: linear-gradient(to top, rgba(7,7,13,0.92) 0%, rgba(7,7,13,0.4) 50%, transparent 100%);
-      z-index: 1;
-    }
-    .team-photo {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 15%;
-      transition: transform 0.65s ease;
-      filter: brightness(0.8) contrast(1.08) saturate(0.88);
-    }
-    .team-card:hover .team-photo { transform: scale(1.04); }
-    .team-overlay {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 28px 32px;
-      z-index: 2;
-    }
-    .team-exp {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 6px;
-    }
-    .team-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 34px;
-      font-weight: 400;
-      color: var(--white);
-      line-height: 1.1;
-    }
-    .team-info {
-      padding: 28px 32px;
-    }
-    .team-specialty {
-      font-size: 13.5px;
-      font-weight: 300;
-      color: var(--cream-dim);
-      line-height: 1.75;
-    }
-    .team-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 18px;
-    }
-    .tag {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-      border: 1px solid var(--gold-border);
-      padding: 4px 12px;
-      border-radius: 2px;
-    }
-
-    /* ─── BOOKING ────────────────────────────── */
-    .booking {
-      background: var(--bg);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .booking::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(201,169,110,.055) 0%, transparent 68%);
-      pointer-events: none;
-    }
-    .booking-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-    .booking h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(42px, 5vw, 76px);
-      font-weight: 400;
-      color: var(--cream);
-      margin-bottom: 18px;
-    }
-    .booking h2 em { font-style: italic; color: var(--gold); }
-    .booking-sub {
-      font-size: 15px;
-      font-weight: 300;
-      color: var(--cream-dim);
-      line-height: 1.75;
-      max-width: 480px;
-      margin: 0 auto 56px;
-    }
-    #booking-widget {
-      min-height: 80px;
-      width: 100%;
-    }
-
-    /* ─── REVIEWS ────────────────────────────── */
-    .reviews { background: var(--surface-1); }
-    .reviews-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-    .review-card {
-      background: var(--surface-2);
-      border: 1px solid var(--gold-border);
-      border-radius: 4px;
-      padding: 36px 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-    .review-stars {
-      color: var(--gold);
-      font-size: 13px;
-      letter-spacing: 3px;
-    }
-    .review-quote {
-      font-size: 14px;
-      font-weight: 300;
-      color: var(--cream-dim);
-      line-height: 1.75;
-      font-style: italic;
-      flex: 1;
-    }
-    .review-footer { border-top: 1px solid var(--gold-border); padding-top: 18px; }
-    .review-name {
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--cream);
-    }
-    .review-source {
-      font-size: 11px;
-      color: var(--gold-dim);
-      margin-top: 3px;
-    }
-
-    /* ─── CONTACT ────────────────────────────── */
-    .contact { background: var(--bg); border-top: 1px solid var(--gold-border); }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr 1fr;
-      gap: 72px;
-    }
-    .contact-col h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      font-weight: 400;
-      color: var(--cream);
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--gold-border);
-    }
-    .contact-col p,
-    .contact-col a {
-      display: block;
-      font-size: 14px;
-      font-weight: 300;
-      color: var(--cream-dim);
-      line-height: 1.85;
-      transition: color 0.2s;
-    }
-    .contact-col a:hover { color: var(--gold); }
-    .hours-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      font-weight: 300;
-      color: var(--cream-dim);
-      padding: 9px 0;
-      border-bottom: 1px solid rgba(201,169,110,.06);
-    }
-    .hours-row:last-child { border-bottom: none; }
-    .hours-time { color: var(--cream); font-weight: 400; }
-
-    /* ─── FOOTER ─────────────────────────────── */
-    .footer {
-      background: var(--surface-1);
-      border-top: 1px solid var(--gold-border);
-      padding: 36px 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-    .footer-logo img {
-      height: 34px;
-      width: auto;
-      opacity: 0.75;
-      filter: brightness(1.1);
-    }
-    .footer-copy {
-      font-size: 11.5px;
-      color: var(--cream-faint);
-      letter-spacing: 0.04em;
-    }
-    .footer-links {
-      display: flex;
-      gap: 28px;
-    }
-    .footer-links a {
-      font-size: 11.5px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--cream-faint);
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--gold); }
-
-    /* ─── SCROLL REVEAL ──────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.72s ease, transform 0.72s ease;
-    }
-    .reveal.visible { opacity: 1; transform: none; }
-    .reveal-d1 { transition-delay: 0.08s; }
-    .reveal-d2 { transition-delay: 0.16s; }
-    .reveal-d3 { transition-delay: 0.24s; }
-
-    /* ─── RESPONSIVE ─────────────────────────── */
-    @media (max-width: 1024px) {
-      .nav { padding: 0 32px; }
-      .hero-left { padding: calc(var(--nav-h) + 48px) 40px 64px; }
-      .section { padding: 88px 32px; }
-      .intro { padding: 64px 32px; }
-      .statsbar { padding: 24px 32px; gap: 40px; }
-      .contact-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
-      .footer { padding: 32px 32px; }
-    }
-
-    @media (max-width: 860px) {
-      .nav-links { display: none; }
-      .nav-burger { display: flex; }
-
-      /* hero stacked */
-      .hero { grid-template-columns: 1fr; }
-      .hero-left {
-        padding: calc(var(--nav-h) + 40px) 28px 72px;
-        justify-content: flex-end;
-        min-height: 100dvh;
-        position: relative;
-        z-index: 2;
-      }
-      .hero-right {
-        position: absolute; inset: 0;
-        z-index: 1;
-      }
-      .hero-right::before {
-        background: linear-gradient(to top, rgba(7,7,13,.95) 30%, rgba(7,7,13,.45) 70%, transparent 100%);
-      }
-      .hero-sub { max-width: 100%; }
-
-      .statsbar { flex-wrap: wrap; gap: 24px 40px; padding: 28px 24px; }
-      .stat-sep { display: none; }
-
-      .section { padding: 72px 24px; }
-      .intro { padding: 56px 24px; }
-      .intro-inner { grid-template-columns: 1fr; gap: 28px; }
-      .intro-sep { display: none; }
-
-      .services-grid { grid-template-columns: 1fr; }
-      .gallery { grid-template-columns: 1fr; }
-      .team-grid { grid-template-columns: 1fr; }
-      .reviews-grid { grid-template-columns: 1fr; }
-      .contact-grid { grid-template-columns: 1fr; gap: 36px; }
-
-      .footer {
-        flex-direction: column;
-        text-align: center;
-        gap: 18px;
-        padding: 32px 24px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      :root { --nav-h: 68px; }
-      .hero-title { font-size: 44px; }
-      .hero-ctas { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .hero-proof { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .proof-divider { display: none; }
-      .service-card { padding: 36px 28px 32px; }
-      .section-head h2 { font-size: 36px; }
-    }
-
-    /* ─── BOOKING MODAL ─────────────────── */
-    #bookingModal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    #bookingModal.active { display: flex; }
-    .bm-card {
-      position: relative;
-      width: 100%;
-      max-width: 880px;
-      height: 88dvh;
-      max-height: 740px;
-      background: #0d0d17;
-      border: 1px solid rgba(201,169,110,.22);
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 40px 100px rgba(0,0,0,.7);
-    }
-    .bm-card iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-    .bm-close {
-      position: absolute;
-      top: 12px;
-      right: 14px;
-      z-index: 10;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: rgba(201,169,110,.14);
-      border: 1px solid rgba(201,169,110,.28);
-      color: #f5edd8;
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background .2s;
-      line-height: 1;
-    }
-    .bm-close:hover { background: rgba(201,169,110,.28); }
-
-    @media (max-width: 480px) {
-      .bm-card { height: 92dvh; max-height: none; border-radius: 4px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-    }
-  </style>
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/rtl.css">
 </head>
 <body>
-<script
-      src="https://appointment-system-7q3h.vercel.app/widget.js"
-      data-location-id="a18e74b1-5e0b-4c5b-ac79-bcf4326a13e3"
-      data-api-url="https://appointment-system-7q3h.vercel.app"
-    ></script>
 
-  <!-- ── MOBILE OVERLAY + DRAWER ──── -->
-  <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
-  <nav class="drawer" id="drawer" aria-label="Mobile navigation">
-    <button class="drawer-close" onclick="closeDrawer()" aria-label="Close navigation">✕</button>
-    <a href="#services" onclick="closeDrawer()">Services</a>
-    <a href="#team" onclick="closeDrawer()">Our Team</a>
-    <a href="#booking" onclick="closeDrawer(); openBooking(event)">Book Now</a>
-    <a href="#contact" onclick="closeDrawer()">Contact</a>
+<!-- ═══════════════════════════════════════
+     BOOKING WIDGET (loads at body open)
+════════════════════════════════════════ -->
+<script
+  src="https://appointment-system-7q3h.vercel.app/widget.js"
+  data-location-id="a18e74b1-5e0b-4c5b-ac79-bcf4326a13e3"
+  data-api-url="https://appointment-system-7q3h.vercel.app"
+></script>
+
+<!-- ═══════════════════════════════════════
+     MOBILE DRAWER
+════════════════════════════════════════ -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<nav class="drawer" id="drawer" aria-label="Mobile navigation">
+  <button class="drawer-close" data-drawer-close aria-label="Close navigation">✕</button>
+  <a href="#services" data-drawer-link data-i18n="nav_services">Services</a>
+  <a href="#team"     data-drawer-link data-i18n="nav_team">Team</a>
+  <a href="#reviews"  data-drawer-link data-i18n="nav_reviews">Reviews</a>
+  <a href="#contact"  data-drawer-link data-i18n="nav_contact">Contact</a>
+  <a href="#booking"  data-drawer-link data-book data-i18n="nav_book">Book Now</a>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════ -->
+<header class="nav" id="mainNav" role="banner">
+  <a href="#" class="nav-logo-link" aria-label="Ace Lebanese Barbershop">
+    <img
+      src="https://static.wixstatic.com/media/524eb3_7803d714a37f45c4bfac979d536a7516~mv2.png"
+      alt="Ace Lebanese Barbershop"
+      class="nav-logo-img"
+    >
+  </a>
+
+  <nav class="nav-links" aria-label="Primary navigation">
+    <a href="#services" data-i18n="nav_services">Services</a>
+    <a href="#team"     data-i18n="nav_team">Team</a>
+    <a href="#reviews"  data-i18n="nav_reviews">Reviews</a>
+    <a href="#contact"  data-i18n="nav_contact">Contact</a>
+    <button class="lang-toggle" data-lang-toggle aria-label="Switch language">عربي</button>
+    <a href="#booking" class="nav-book" data-book data-i18n="nav_book">Book Now</a>
   </nav>
 
-  <!-- ── NAV ──────────────────────── -->
-  <header class="nav" id="mainNav" role="banner">
-    <a href="#" aria-label="Ace Lebanese Barbershop — Home">
-      <img src="https://static.wixstatic.com/media/524eb3_7803d714a37f45c4bfac979d536a7516~mv2.png"
-           alt="Ace Lebanese Barbershop logo" class="nav-logo" style="height:42px;width:auto;filter:brightness(1.1)">
-    </a>
-    <nav class="nav-links" aria-label="Primary navigation">
-      <a href="#services">Services</a>
-      <a href="#team">Team</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#contact">Contact</a>
-      <a href="#booking" class="nav-book" onclick="openBooking(event)">Book Now</a>
-    </nav>
-    <button class="nav-burger" id="burger" aria-label="Open navigation menu" aria-expanded="false" onclick="toggleDrawer()">
+  <!-- mobile: lang toggle + burger -->
+  <div class="nav-right">
+    <button class="lang-toggle" data-lang-toggle aria-label="Switch language">عربي</button>
+    <button class="nav-burger" id="burger" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
-  </header>
+  </div>
+</header>
 
-  <!-- ── HERO ─────────────────────── -->
-  <section class="hero" aria-labelledby="hero-heading">
-    <div class="hero-watermark" aria-hidden="true"></div>
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero-watermark" aria-hidden="true"></div>
 
-    <div class="hero-left">
-      <p class="eyebrow hero-eyebrow">Al Khobar's Premier Barbershop</p>
+  <div class="hero-left">
+    <p class="eyebrow hero-eyebrow" data-i18n="hero_eyebrow">Al Khobar's Premier Barbershop</p>
 
-      <h1 id="hero-heading" class="serif hero-title">
-        The Art of<br>
-        <em>Lebanese</em><br>
-        Craft.
-      </h1>
+    <h1 id="hero-heading" class="serif hero-title" data-i18n-html="hero_title">
+      The Art of<br><em>Lebanese</em><br>Craft.
+    </h1>
 
-      <p class="hero-sub">
-        Where precision meets tradition. Expert haircuts, sharp fades, and luxury grooming treatments crafted by hands with decades of mastery.
-      </p>
+    <p class="hero-sub" data-i18n="hero_sub">
+      Where precision meets tradition. Expert haircuts, sharp fades, and luxury grooming treatments crafted by hands with decades of mastery.
+    </p>
 
-      <div class="hero-ctas">
-        <a href="#booking" class="btn-primary" onclick="openBooking(event)">Book an Appointment</a>
-        <a href="#services" class="btn-outline">View Services</a>
+    <div class="hero-ctas">
+      <a href="#booking" class="btn-primary" data-book data-i18n="hero_cta_primary">Book an Appointment</a>
+      <a href="#services" class="btn-outline" data-i18n="hero_cta_secondary">View Services</a>
+    </div>
+
+    <div class="hero-proof" aria-label="Social proof">
+      <div>
+        <div class="proof-num" data-i18n="hero_proof_num">400+</div>
+        <div class="proof-stars" aria-label="Five stars">★★★★★</div>
       </div>
-
-      <div class="hero-proof" aria-label="Social proof">
-        <div>
-          <div class="proof-num">400+</div>
-          <div class="proof-stars">★★★★★</div>
-        </div>
-        <div class="proof-divider"></div>
-        <p class="proof-text">Five-star reviews across<br>Google &amp; all platforms</p>
-      </div>
-    </div>
-
-    <div class="hero-right" aria-hidden="true">
-      <img class="hero-img"
-           src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEOx8A_i-o5UzuMnToanleuXWVwDSefBRrhKoFWt4tWWQudT6DK7QlAtT9Wrf1JP3O6VnkBxPrM4SuBEApd_NzCVMJV2ePvLZgusIHoZEkGDJpaI32cN_997ds6dFE8qC308lnlaT6mrsg=w1600-h1066-k-no"
-           alt=""
-           loading="eager"
-           fetchpriority="high">
-    </div>
-  </section>
-
-  <!-- ── STATS BAR ─────────────────── -->
-  <div class="statsbar" role="region" aria-label="Key statistics">
-    <div class="stat reveal">
-      <span class="stat-n">400+</span>
-      <span class="stat-l">Five-Star Reviews</span>
-    </div>
-    <div class="stat-sep" aria-hidden="true"></div>
-    <div class="stat reveal reveal-d1">
-      <span class="stat-n">10+</span>
-      <span class="stat-l">Years of Mastery</span>
-    </div>
-    <div class="stat-sep" aria-hidden="true"></div>
-    <div class="stat reveal reveal-d2">
-      <span class="stat-n">2</span>
-      <span class="stat-l">Master Barbers</span>
-    </div>
-    <div class="stat-sep" aria-hidden="true"></div>
-    <div class="stat reveal reveal-d3">
-      <span class="stat-n">5★</span>
-      <span class="stat-l">Rated Experience</span>
+      <div class="proof-divider" aria-hidden="true"></div>
+      <p class="proof-text" data-i18n-html="hero_proof_label">Five-star reviews across<br>Google &amp; all platforms</p>
     </div>
   </div>
 
-  <!-- ── INTRO BAND ─────────────────── -->
-  <div class="intro" role="region" aria-label="About">
-    <div class="intro-inner">
-      <h2 class="intro-tagline serif reveal">
-        Service Beyond<br>
-        <em>Expectation</em> —<br>
-        Every Single Visit.
+  <div class="hero-right" aria-hidden="true">
+    <img
+      class="hero-img"
+      src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEOx8A_i-o5UzuMnToanleuXWVwDSefBRrhKoFWt4tWWQudT6DK7QlAtT9Wrf1JP3O6VnkBxPrM4SuBEApd_NzCVMJV2ePvLZgusIHoZEkGDJpaI32cN_997ds6dFE8qC308lnlaT6mrsg=w1600-h1066-k-no"
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+    >
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     STATS BAR
+════════════════════════════════════════ -->
+<div class="statsbar" role="region" aria-label="Key statistics">
+  <div class="stat reveal">
+    <span class="stat-n">400+</span>
+    <span class="stat-l" data-i18n="stat_reviews">Five-Star Reviews</span>
+  </div>
+  <div class="stat-sep" aria-hidden="true"></div>
+  <div class="stat reveal reveal-d1">
+    <span class="stat-n">10+</span>
+    <span class="stat-l" data-i18n="stat_years">Years of Mastery</span>
+  </div>
+  <div class="stat-sep" aria-hidden="true"></div>
+  <div class="stat reveal reveal-d2">
+    <span class="stat-n">2</span>
+    <span class="stat-l" data-i18n="stat_barbers">Master Barbers</span>
+  </div>
+  <div class="stat-sep" aria-hidden="true"></div>
+  <div class="stat reveal reveal-d3">
+    <span class="stat-n">5★</span>
+    <span class="stat-l" data-i18n="stat_rated">Rated Experience</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     INTRO BAND
+════════════════════════════════════════ -->
+<div class="intro" role="region">
+  <div class="intro-inner">
+    <h2 class="intro-tagline serif reveal" data-i18n-html="intro_tagline">
+      Service Beyond<br><em>Expectation</em> —<br>Every Single Visit.
+    </h2>
+    <div class="intro-sep" aria-hidden="true"></div>
+    <p class="intro-body reveal reveal-d1" data-i18n="intro_body">
+      Ace Lebanese Barbershop brings the craft and warmth of Levantine grooming culture to the heart of Al Khobar. Our masters combine time-honoured barbering traditions with modern techniques — from precision fades and sculptured beards to rejuvenating Japanese head spas and deep facial treatments. Every client leaves looking and feeling their absolute best.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SERVICES
+════════════════════════════════════════ -->
+<section class="services section" id="services" aria-labelledby="services-heading">
+  <div class="inner">
+    <div class="section-head">
+      <p class="eyebrow">
+        <span class="rule" aria-hidden="true"></span>
+        <span data-i18n="services_eyebrow">Our Packages</span>
+      </p>
+      <h2 id="services-heading" class="serif" data-i18n-html="services_heading">
+        Crafted for the<br><em>Distinguished</em>
       </h2>
-      <div class="intro-sep" aria-hidden="true"></div>
-      <p class="intro-body reveal reveal-d1">
-        Ace Lebanese Barbershop brings the craft and warmth of Levantine grooming culture to the heart of Al Khobar. Our masters combine time-honoured barbering traditions with modern techniques — from precision fades and sculptured beards to rejuvenating Japanese head spas and deep facial treatments. Every client leaves looking and feeling their absolute best.
-      </p>
+    </div>
+
+    <div class="services-grid">
+
+      <!-- Ace Package -->
+      <article class="service-card reveal" aria-labelledby="pkg-ace">
+        <div class="service-top-line" aria-hidden="true"></div>
+        <span class="service-badge badge-standard" data-i18n="badge_signature">Signature</span>
+        <h3 id="pkg-ace" class="serif" data-i18n="pkg_ace_name">Ace Package</h3>
+        <ul class="service-list">
+          <li class="service-row">
+            <span class="service-dot" aria-hidden="true">✦</span>
+            <span data-i18n="service_haircut">Haircut &amp; Beard Trim</span>
+            <span class="service-dur">50 min</span>
+          </li>
+          <li class="service-row">
+            <span class="service-dot" aria-hidden="true">✦</span>
+            <span data-i18n="service_headspa">Japanese Head Spa</span>
+            <span class="service-dur">30 min</span>
+          </li>
+        </ul>
+        <div class="service-cta">
+          <a href="#booking" class="btn-primary" data-book data-i18n="book_this">Book This Package</a>
+        </div>
+      </article>
+
+      <!-- VIP Package -->
+      <article class="service-card reveal reveal-d1" style="border-color:var(--gold-dim)" aria-labelledby="pkg-vip">
+        <div class="service-top-line" aria-hidden="true"></div>
+        <span class="service-badge badge-vip" data-i18n="badge_vip">VIP Experience</span>
+        <h3 id="pkg-vip" class="serif" data-i18n="pkg_vip_name">Ace VIP Package</h3>
+        <ul class="service-list">
+          <li class="service-row">
+            <span class="service-dot" aria-hidden="true">✦</span>
+            <span data-i18n="service_haircut">Haircut &amp; Beard Trim</span>
+            <span class="service-dur">50 min</span>
+          </li>
+          <li class="service-row">
+            <span class="service-dot" aria-hidden="true">✦</span>
+            <span data-i18n="service_headspa">Japanese Head Spa</span>
+            <span class="service-dur">30 min</span>
+          </li>
+          <li class="service-row">
+            <span class="service-dot" aria-hidden="true">✦</span>
+            <span data-i18n="service_oiltreat">Luxury Hair Oil Treatment</span>
+            <span class="service-dur">30 min</span>
+          </li>
+          <li class="service-row">
+            <span class="service-dot" aria-hidden="true">✦</span>
+            <span data-i18n="service_facial">Facial Deep Cleaning</span>
+            <span class="service-dur">60 min</span>
+          </li>
+        </ul>
+        <div class="service-cta">
+          <a href="#booking" class="btn-primary" data-book data-i18n="book_vip">Book VIP Experience</a>
+        </div>
+      </article>
+
     </div>
   </div>
+</section>
 
-  <!-- ── SERVICES ───────────────────── -->
-  <section class="services section" id="services" aria-labelledby="services-heading">
-    <div class="inner">
-      <div class="section-head">
-        <p class="eyebrow"><span class="rule" aria-hidden="true"></span> Our Packages</p>
-        <h2 id="services-heading" class="serif">Crafted for the<br><em>Distinguished</em></h2>
-      </div>
-
-      <div class="services-grid">
-
-        <!-- SIGNATURE PACKAGE -->
-        <article class="service-card reveal" aria-labelledby="pkg-ace">
-          <div class="service-top-line" aria-hidden="true"></div>
-          <span class="service-badge badge-standard">Signature</span>
-          <h3 id="pkg-ace" class="serif">Ace Package</h3>
-          <ul class="service-list" aria-label="Services included">
-            <li class="service-row">
-              <span class="service-dot" aria-hidden="true">✦</span>
-              <span>Haircut &amp; Beard Trim</span>
-              <span class="service-dur">50 min</span>
-            </li>
-            <li class="service-row">
-              <span class="service-dot" aria-hidden="true">✦</span>
-              <span>Japanese Head Spa</span>
-              <span class="service-dur">30 min</span>
-            </li>
-          </ul>
-          <div class="service-cta">
-            <a href="#booking" class="btn-primary" onclick="openBooking(event)">Book This Package</a>
-          </div>
-        </article>
-
-        <!-- VIP PACKAGE -->
-        <article class="service-card reveal reveal-d1" style="border-color:var(--gold-dim)" aria-labelledby="pkg-vip">
-          <div class="service-top-line" aria-hidden="true"></div>
-          <span class="service-badge badge-vip">VIP Experience</span>
-          <h3 id="pkg-vip" class="serif">Ace VIP Package</h3>
-          <ul class="service-list" aria-label="Services included">
-            <li class="service-row">
-              <span class="service-dot" aria-hidden="true">✦</span>
-              <span>Haircut &amp; Beard Trim</span>
-              <span class="service-dur">50 min</span>
-            </li>
-            <li class="service-row">
-              <span class="service-dot" aria-hidden="true">✦</span>
-              <span>Japanese Head Spa</span>
-              <span class="service-dur">30 min</span>
-            </li>
-            <li class="service-row">
-              <span class="service-dot" aria-hidden="true">✦</span>
-              <span>Luxury Hair Oil Treatment</span>
-              <span class="service-dur">30 min</span>
-            </li>
-            <li class="service-row">
-              <span class="service-dot" aria-hidden="true">✦</span>
-              <span>Facial Deep Cleaning</span>
-              <span class="service-dur">60 min</span>
-            </li>
-          </ul>
-          <div class="service-cta">
-            <a href="#booking" class="btn-primary" onclick="openBooking(event)">Book VIP Experience</a>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── GALLERY STRIP ──────────────── -->
-  <div class="gallery" aria-label="Portfolio gallery" role="region">
-    <div class="gallery-cell">
-      <img src="https://static.wixstatic.com/media/524eb3_bda28d4fd0ab4724aa5df95c3cb399a7~mv2.jpg"
-           alt="Expert barbering craft at Ace Lebanese Barbershop"
-           loading="lazy">
-    </div>
-    <div class="gallery-cell">
-      <img src="https://static.wixstatic.com/media/524eb3_56ea5f9182e34ebaa3a8a5d6d5104b4d~mv2.jpg"
-           alt="Premium grooming at Ace Lebanese Barbershop"
-           loading="lazy">
-    </div>
+<!-- ═══════════════════════════════════════
+     GALLERY
+════════════════════════════════════════ -->
+<div class="gallery" role="region" aria-label="Portfolio gallery">
+  <div class="gallery-cell">
+    <img
+      src="https://static.wixstatic.com/media/524eb3_bda28d4fd0ab4724aa5df95c3cb399a7~mv2.jpg"
+      alt="Expert barbering craft at Ace Lebanese Barbershop"
+      loading="lazy"
+    >
   </div>
+  <div class="gallery-cell">
+    <img
+      src="https://static.wixstatic.com/media/524eb3_56ea5f9182e34ebaa3a8a5d6d5104b4d~mv2.jpg"
+      alt="Premium grooming at Ace Lebanese Barbershop"
+      loading="lazy"
+    >
+  </div>
+</div>
 
-  <!-- ── TEAM ───────────────────────── -->
-  <section class="team section" id="team" aria-labelledby="team-heading">
-    <div class="inner">
-      <div class="section-head">
-        <p class="eyebrow"><span class="rule" aria-hidden="true"></span> Our Masters</p>
-        <h2 id="team-heading" class="serif">The Hands Behind<br>the <em>Craft</em></h2>
-      </div>
-
-      <div class="team-grid">
-
-        <article class="team-card reveal" aria-labelledby="barber-1">
-          <div class="team-photo-wrap">
-            <img class="team-photo"
-                 src="https://static.wixstatic.com/media/524eb3_686019c66fe34bbb90222943df470016~mv2.jpeg"
-                 alt="Mohammad Selman — Master Barber with 10 years of experience"
-                 loading="lazy">
-            <div class="team-overlay">
-              <p class="team-exp">10 Years of Mastery</p>
-              <h3 id="barber-1" class="team-name serif">Mohammad Selman</h3>
-            </div>
-          </div>
-          <div class="team-info">
-            <p class="team-specialty">
-              A master of precision cuts, flawless fades, sculpted beards, and restorative head spas. Mohammad's hands have set the benchmark for excellence in Al Khobar.
-            </p>
-            <div class="team-tags" aria-label="Specialties">
-              <span class="tag">Precision Cuts</span>
-              <span class="tag">Fades</span>
-              <span class="tag">Beard Design</span>
-              <span class="tag">Head Spa</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="team-card reveal reveal-d1" aria-labelledby="barber-2">
-          <div class="team-photo-wrap">
-            <img class="team-photo"
-                 src="https://static.wixstatic.com/media/524eb3_90fb98b8f4f546fb8bc750cb1933d59c~mv2.jpeg"
-                 alt="Mostafa Saeed — Master Barber with 7 years of experience"
-                 loading="lazy">
-            <div class="team-overlay">
-              <p class="team-exp">7 Years of Mastery</p>
-              <h3 id="barber-2" class="team-name serif">Mostafa Saeed</h3>
-            </div>
-          </div>
-          <div class="team-info">
-            <p class="team-specialty">
-              Known for creative custom looks and razor-sharp fades, Mostafa's eye for detail and instinct for personal style turn every visit into a signature expression.
-            </p>
-            <div class="team-tags" aria-label="Specialties">
-              <span class="tag">Custom Looks</span>
-              <span class="tag">Sharp Fades</span>
-              <span class="tag">Creative Styles</span>
-            </div>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── BOOKING ────────────────────── -->
-  <section class="booking section" id="booking" aria-labelledby="booking-heading">
-    <div class="booking-inner">
-      <p class="eyebrow" style="justify-content:center">
+<!-- ═══════════════════════════════════════
+     TEAM
+════════════════════════════════════════ -->
+<section class="team section" id="team" aria-labelledby="team-heading">
+  <div class="inner">
+    <div class="section-head">
+      <p class="eyebrow">
         <span class="rule" aria-hidden="true"></span>
-        Reserve Your Chair
-        <span class="rule" aria-hidden="true"></span>
+        <span data-i18n="team_eyebrow">Our Masters</span>
       </p>
-      <h2 id="booking-heading">Book Your<br><em>Appointment</em></h2>
-      <p class="booking-sub">
-        Choose your package, select your barber, and lock in your time. We'll take care of everything else.
-      </p>
-
-      <!-- Booking widget mounts here -->
-      <div id="booking-widget" role="region" aria-label="Appointment booking"></div>
+      <h2 id="team-heading" class="serif" data-i18n-html="team_heading">
+        The Hands Behind<br>the <em>Craft</em>
+      </h2>
     </div>
-  </section>
 
-  <!-- ── REVIEWS ────────────────────── -->
-  <section class="reviews section" id="reviews" aria-labelledby="reviews-heading">
-    <div class="inner">
-      <div class="section-head">
-        <p class="eyebrow"><span class="rule" aria-hidden="true"></span> Client Voices</p>
-        <h2 id="reviews-heading" class="serif">What Our Clients<br><em>Say</em></h2>
-      </div>
+    <div class="team-grid">
 
-      <div class="reviews-grid" role="list">
-
-        <article class="review-card reveal" role="listitem">
-          <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <p class="review-quote">"The best barbershop I've been to in Al Khobar. Mohammad's precision is absolutely unmatched — walked out feeling like a completely new man."</p>
-          <div class="review-footer">
-            <p class="review-name">Ahmed K.</p>
-            <p class="review-source">Google Review</p>
-          </div>
-        </article>
-
-        <article class="review-card reveal reveal-d1" role="listitem">
-          <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <p class="review-quote">"The Japanese head spa experience is absolutely incredible. The atmosphere is luxurious, the attention to detail is extraordinary. Already booked my next visit."</p>
-          <div class="review-footer">
-            <p class="review-name">Omar R.</p>
-            <p class="review-source">Google Review</p>
-          </div>
-        </article>
-
-        <article class="review-card reveal reveal-d2" role="listitem">
-          <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <p class="review-quote">"Mostafa gave me the sharpest fade I've ever had. The VIP package is worth every riyal — genuinely felt pampered from start to finish. Won't go anywhere else."</p>
-          <div class="review-footer">
-            <p class="review-name">Khalid M.</p>
-            <p class="review-source">Google Review</p>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CONTACT ────────────────────── -->
-  <section class="contact section" id="contact" aria-labelledby="contact-heading">
-    <div class="inner">
-      <div class="section-head">
-        <p class="eyebrow"><span class="rule" aria-hidden="true"></span> Visit Us</p>
-        <h2 id="contact-heading" class="serif">Find <em>Ace</em></h2>
-      </div>
-
-      <div class="contact-grid">
-
-        <div class="contact-col reveal">
-          <h4 class="serif">Location &amp; Contact</h4>
-          <p>Prince Sultan Road</p>
-          <p>Al Jawharah, Al Khobar 31311</p>
-          <p style="margin-top:16px"><a href="tel:+966560961961">+966 56 096 1961</a></p>
-          <a href="mailto:Acelebanesebarbershop0@gmail.com">Acelebanesebarbershop0@gmail.com</a>
-          <div style="margin-top:28px">
-            <a href="https://instagram.com/acelebanesebarbershop"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="Follow on Instagram">@acelebanesebarbershop</a>
+      <!-- Mohammad Selman -->
+      <article class="team-card reveal" aria-labelledby="barber-1">
+        <div class="team-photo-wrap">
+          <img
+            class="team-photo"
+            src="https://static.wixstatic.com/media/524eb3_686019c66fe34bbb90222943df470016~mv2.jpeg"
+            alt="Mohammad Selman — Master Barber"
+            loading="lazy"
+          >
+          <div class="team-overlay">
+            <p class="team-exp" data-i18n="barber1_exp">10 Years of Mastery</p>
+            <h3 id="barber-1" class="team-name serif" data-i18n="barber1_name">Mohammad Selman</h3>
           </div>
         </div>
-
-        <div class="contact-col reveal reveal-d1">
-          <h4 class="serif">Hours</h4>
-          <div class="hours-row">
-            <span>Saturday – Thursday</span>
-            <span class="hours-time">12:00 – 22:00</span>
-          </div>
-          <div class="hours-row">
-            <span>Friday</span>
-            <span class="hours-time">13:00 – 22:00</span>
+        <div class="team-info">
+          <p class="team-specialty" data-i18n="barber1_bio">
+            A master of precision cuts, flawless fades, sculpted beards, and restorative head spas. Mohammad's hands have set the benchmark for excellence in Al Khobar.
+          </p>
+          <div class="team-tags" aria-label="Specialties">
+            <span class="tag" data-i18n="tag_precision">Precision Cuts</span>
+            <span class="tag" data-i18n="tag_fades">Fades</span>
+            <span class="tag" data-i18n="tag_beard">Beard Design</span>
+            <span class="tag" data-i18n="tag_headspa">Head Spa</span>
           </div>
         </div>
+      </article>
 
-        <div class="contact-col reveal reveal-d2">
-          <h4 class="serif">Book Now</h4>
-          <p style="margin-bottom:28px">Ready for a cut that speaks for itself? Reserve your chair with one of our masters today.</p>
-          <a href="#booking" class="btn-primary" onclick="openBooking(event)">Book Appointment</a>
+      <!-- Mostafa Saeed -->
+      <article class="team-card reveal reveal-d1" aria-labelledby="barber-2">
+        <div class="team-photo-wrap">
+          <img
+            class="team-photo"
+            src="https://static.wixstatic.com/media/524eb3_90fb98b8f4f546fb8bc750cb1933d59c~mv2.jpeg"
+            alt="Mostafa Saeed — Master Barber"
+            loading="lazy"
+          >
+          <div class="team-overlay">
+            <p class="team-exp" data-i18n="barber2_exp">7 Years of Mastery</p>
+            <h3 id="barber-2" class="team-name serif" data-i18n="barber2_name">Mostafa Saeed</h3>
+          </div>
         </div>
+        <div class="team-info">
+          <p class="team-specialty" data-i18n="barber2_bio">
+            Known for creative custom looks and razor-sharp fades, Mostafa's eye for detail and instinct for personal style turn every visit into a signature expression.
+          </p>
+          <div class="team-tags" aria-label="Specialties">
+            <span class="tag" data-i18n="tag_custom">Custom Looks</span>
+            <span class="tag" data-i18n="tag_sharp">Sharp Fades</span>
+            <span class="tag" data-i18n="tag_creative">Creative Styles</span>
+          </div>
+        </div>
+      </article>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FOOTER ─────────────────────── -->
-  <footer class="footer" role="contentinfo">
-    <a href="#" aria-label="Ace Lebanese Barbershop — Back to top">
-      <img src="https://static.wixstatic.com/media/524eb3_7803d714a37f45c4bfac979d536a7516~mv2.png"
-           alt="Ace Lebanese Barbershop"
-           class="footer-logo" style="height:34px;width:auto;opacity:.75">
-    </a>
-    <p class="footer-copy">© 2025 Ace Lebanese Barbershop. All rights reserved.</p>
-    <nav class="footer-links" aria-label="Footer navigation">
-      <a href="https://instagram.com/acelebanesebarbershop"
-         target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a href="#booking" onclick="openBooking(event)">Book</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </footer>
-
-  <!-- ── BOOKING MODAL ──────────────── -->
-  <div id="bookingModal" role="dialog" aria-modal="true" aria-label="Book an appointment">
-    <div class="bm-card">
-      <button class="bm-close" onclick="closeBookingModal()" aria-label="Close booking">✕</button>
-      <iframe
-        src="https://appointment-system-7q3h.vercel.app?location=a18e74b1-5e0b-4c5b-ac79-bcf4326a13e3"
-        title="Book an appointment"
-        loading="lazy"
-        allowfullscreen
-      ></iframe>
     </div>
   </div>
+</section>
 
-  <script>
-    /* ── BOOKING MODAL ── */
-    function openBooking(e) {
-      if (e) e.preventDefault();
-      document.getElementById('bookingModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeBookingModal() {
-      document.getElementById('bookingModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeBookingModal();
-    });
+<!-- ═══════════════════════════════════════
+     BOOKING SECTION
+════════════════════════════════════════ -->
+<section class="booking section" id="booking" aria-labelledby="booking-heading">
+  <div class="booking-inner">
+    <p class="eyebrow" style="justify-content:center">
+      <span class="rule" aria-hidden="true"></span>
+      <span data-i18n="booking_eyebrow">Reserve Your Chair</span>
+      <span class="rule" aria-hidden="true"></span>
+    </p>
+    <h2 id="booking-heading" class="serif" data-i18n-html="booking_heading">
+      Book Your<br><em>Appointment</em>
+    </h2>
+    <p class="booking-sub" data-i18n="booking_sub">
+      Choose your package, select your barber, and lock in your time. We'll take care of everything else.
+    </p>
+    <div id="booking-widget" role="region" aria-label="Appointment booking"></div>
+  </div>
+</section>
 
-    /* ── NAV SCROLL STATE ── */
-    const nav = document.getElementById('mainNav');
-    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 48);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+<!-- ═══════════════════════════════════════
+     REVIEWS
+════════════════════════════════════════ -->
+<section class="reviews section" id="reviews" aria-labelledby="reviews-heading">
+  <div class="inner">
+    <div class="section-head">
+      <p class="eyebrow">
+        <span class="rule" aria-hidden="true"></span>
+        <span data-i18n="reviews_eyebrow">Client Voices</span>
+      </p>
+      <h2 id="reviews-heading" class="serif" data-i18n-html="reviews_heading">
+        What Our Clients<br><em>Say</em>
+      </h2>
+    </div>
 
-    /* ── MOBILE DRAWER ── */
-    const burger  = document.getElementById('burger');
-    const drawer  = document.getElementById('drawer');
-    const overlay = document.getElementById('drawerOverlay');
+    <div class="reviews-grid" role="list">
 
-    function openDrawer() {
-      drawer.classList.add('open');
-      overlay.classList.add('open');
-      burger.classList.add('active');
-      burger.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeDrawer() {
-      drawer.classList.remove('open');
-      overlay.classList.remove('open');
-      burger.classList.remove('active');
-      burger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-    function toggleDrawer() {
-      drawer.classList.contains('open') ? closeDrawer() : openDrawer();
-    }
+      <article class="review-card reveal" role="listitem">
+        <div class="review-stars" aria-label="5 stars">★★★★★</div>
+        <p class="review-quote" data-i18n="review1_text">
+          "The best barbershop I've been to in Al Khobar. Mohammad's precision is absolutely unmatched — walked out feeling like a completely new man."
+        </p>
+        <div class="review-footer">
+          <p class="review-name" data-i18n="review1_name">Ahmed K.</p>
+          <p class="review-source" data-i18n="review_platform">Google Review</p>
+        </div>
+      </article>
 
-    /* ── SCROLL REVEAL ── */
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          revealObserver.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      <article class="review-card reveal reveal-d1" role="listitem">
+        <div class="review-stars" aria-label="5 stars">★★★★★</div>
+        <p class="review-quote" data-i18n="review2_text">
+          "The Japanese head spa experience is absolutely incredible. The atmosphere is luxurious, the attention to detail is extraordinary. Already booked my next visit."
+        </p>
+        <div class="review-footer">
+          <p class="review-name" data-i18n="review2_name">Omar R.</p>
+          <p class="review-source" data-i18n="review_platform">Google Review</p>
+        </div>
+      </article>
 
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+      <article class="review-card reveal reveal-d2" role="listitem">
+        <div class="review-stars" aria-label="5 stars">★★★★★</div>
+        <p class="review-quote" data-i18n="review3_text">
+          "Mostafa gave me the sharpest fade I've ever had. The VIP package is worth every riyal — genuinely felt pampered from start to finish. Won't go anywhere else."
+        </p>
+        <div class="review-footer">
+          <p class="review-name" data-i18n="review3_name">Khalid M.</p>
+          <p class="review-source" data-i18n="review_platform">Google Review</p>
+        </div>
+      </article>
 
+    </div>
+  </div>
+</section>
 
-    /* ── SMOOTH ANCHOR OFFSET (accounts for fixed nav) ── */
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const target = document.querySelector(a.getAttribute('href'));
-        if (!target) return;
-        e.preventDefault();
-        const top = target.getBoundingClientRect().top + window.scrollY - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'));
-        window.scrollTo({ top, behavior: 'smooth' });
-      });
-    });
-  </script>
+<!-- ═══════════════════════════════════════
+     CONTACT
+════════════════════════════════════════ -->
+<section class="contact section" id="contact" aria-labelledby="contact-heading">
+  <div class="inner">
+    <div class="section-head">
+      <p class="eyebrow">
+        <span class="rule" aria-hidden="true"></span>
+        <span data-i18n="contact_eyebrow">Visit Us</span>
+      </p>
+      <h2 id="contact-heading" class="serif" data-i18n-html="contact_heading">Find <em>Ace</em></h2>
+    </div>
+
+    <div class="contact-grid">
+
+      <div class="contact-col reveal">
+        <h4 class="serif" data-i18n="contact_loc_heading">Location &amp; Contact</h4>
+        <p data-i18n="contact_address1">Prince Sultan Road</p>
+        <p data-i18n="contact_address2">Al Jawharah, Al Khobar 31311</p>
+        <a href="tel:+966560961961" style="margin-top:16px">+966 56 096 1961</a>
+        <a href="mailto:Acelebanesebarbershop0@gmail.com">Acelebanesebarbershop0@gmail.com</a>
+        <a href="https://instagram.com/acelebanesebarbershop" target="_blank" rel="noopener noreferrer" style="margin-top:16px">@acelebanesebarbershop</a>
+      </div>
+
+      <div class="contact-col reveal reveal-d1">
+        <h4 class="serif" data-i18n="contact_hours_heading">Hours</h4>
+        <div class="hours-row">
+          <span data-i18n="hours_sat_thu">Saturday – Thursday</span>
+          <span class="hours-time" data-i18n="hours_sat_thu_time">12:00 – 22:00</span>
+        </div>
+        <div class="hours-row">
+          <span data-i18n="hours_fri">Friday</span>
+          <span class="hours-time" data-i18n="hours_fri_time">13:00 – 22:00</span>
+        </div>
+      </div>
+
+      <div class="contact-col reveal reveal-d2">
+        <h4 class="serif" data-i18n="contact_book_heading">Book Now</h4>
+        <p style="margin-bottom:28px" data-i18n="contact_book_sub">
+          Ready for a cut that speaks for itself? Reserve your chair with one of our masters today.
+        </p>
+        <a href="#booking" class="btn-primary" data-book data-i18n="contact_book_btn">Book Appointment</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="footer" role="contentinfo">
+  <a href="#" aria-label="Ace Lebanese Barbershop — back to top">
+    <img
+      src="https://static.wixstatic.com/media/524eb3_7803d714a37f45c4bfac979d536a7516~mv2.png"
+      alt="Ace Lebanese Barbershop"
+      class="footer-logo"
+    >
+  </a>
+  <p class="footer-copy" data-i18n="footer_copy">© 2025 Ace Lebanese Barbershop. All rights reserved.</p>
+  <nav class="footer-links" aria-label="Footer navigation">
+    <a href="https://instagram.com/acelebanesebarbershop" target="_blank" rel="noopener noreferrer" data-i18n="footer_instagram">Instagram</a>
+    <a href="#booking" data-book data-i18n="footer_book">Book</a>
+    <a href="#contact" data-i18n="footer_contact">Contact</a>
+  </nav>
+</footer>
+
+<!-- ═══════════════════════════════════════
+     BOOKING MODAL
+════════════════════════════════════════ -->
+<div id="bookingModal" role="dialog" aria-modal="true" aria-label="Book an appointment">
+  <div class="bm-card">
+    <button class="bm-close" id="bookingClose" aria-label="Close booking">✕</button>
+    <iframe
+      src="https://appointment-system-7q3h.vercel.app?location=a18e74b1-5e0b-4c5b-ac79-bcf4326a13e3"
+      title="Book an appointment"
+      loading="lazy"
+      allowfullscreen
+    ></iframe>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════ -->
+<script src="js/i18n.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/booking.js"></script>
+<script src="js/reveal.js"></script>
 
 </body>
 </html>
