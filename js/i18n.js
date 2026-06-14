@@ -65,9 +65,15 @@ window.i18n = (() => {
       tag_creative:   'Creative Styles',
 
       /* Booking */
-      booking_eyebrow: 'Reserve Your Chair',
-      booking_heading: 'Book Your<br><em>Appointment</em>',
-      booking_sub:     "Choose your package, select your barber, and lock in your time. We'll take care of everything else.",
+      booking_eyebrow:      'Reserve Your Chair',
+      booking_heading:      'Book Your<br><em>Appointment</em>',
+      booking_sub:          "Choose your package, select your barber, and lock in your time. We'll take care of everything else.",
+      booking_panel_heading:'Your chair is<br><em style="color:var(--gold);font-style:normal;">waiting for you.</em>',
+      booking_panel_body:   'Pick your master, select your experience, and lock in your time — all in under a minute. Every appointment is confirmed instantly. No calls, no waiting. Just show up and let us take care of the rest.',
+      booking_step_1:       'Choose your barber',
+      booking_step_2:       'Select your package',
+      booking_step_3:       'Pick a date & time',
+      booking_step_4:       'Instant confirmation',
 
       /* Reviews */
       reviews_eyebrow:  'Client Voices',
@@ -161,9 +167,15 @@ window.i18n = (() => {
       tag_creative:   'أساليب مبتكرة',
 
       /* Booking */
-      booking_eyebrow: 'احجز كرسيك',
-      booking_heading: 'احجز<br><em>موعدك</em>',
-      booking_sub:     'اختر باقتك، وحدد الحلاق، واحجز وقتك. نحن نتكفل بالباقي.',
+      booking_eyebrow:      'احجز كرسيك',
+      booking_heading:      'احجز<br><em>موعدك</em>',
+      booking_sub:          'اختر باقتك، وحدد الحلاق، واحجز وقتك. نحن نتكفل بالباقي.',
+      booking_panel_heading:'كرسيك<br><em style="color:var(--gold);font-style:normal;">في انتظارك.</em>',
+      booking_panel_body:   'اختر أستاذك، وحدد تجربتك، واحجز وقتك — في أقل من دقيقة. كل موعد يُؤكَّد فوراً. لا مكالمات، لا انتظار. فقط تعال ودعنا نتكفل بالباقي.',
+      booking_step_1:       'اختر حلاقك',
+      booking_step_2:       'اختر باقتك',
+      booking_step_3:       'حدد التاريخ والوقت',
+      booking_step_4:       'تأكيد فوري',
 
       /* Reviews */
       reviews_eyebrow:  'أصوات عملائنا',
